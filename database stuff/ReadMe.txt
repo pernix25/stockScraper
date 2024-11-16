@@ -8,7 +8,6 @@ Open up terminal and run:
 Enter password for mysql
 Execute the following scripts in the command line:
     source /path_to/database_create.sql;
-    source /Users/mark/Desktop/Path_to_Millionare/stockScraper/database stuff/database_create.sql;
 
 to resest the database run:
-    source /Users/mark/Desktop/Path_to_Millionare/stockScraper/database stuff/reset.sql;
+    source /path_to/reset.sql;
