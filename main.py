@@ -77,37 +77,7 @@ def initial_option_upload(lyst):
 
 
 
-headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36'}
-
-stock_price_url = 'https://finance.yahoo.com/quote/TSLA/'
-
-#r = requests.get(stock_price_url)
-#soup = bs(r.text, 'html.parser')
-
-#price = soup.find('fin-streamer', {'class': 'livePrice yf-1tejb6'}).text
-#change = soup.find('fin-streamer', {'class': 'priceChange yf-1tejb6'}).text
-#change_percent = soup.find('fin-streamer', {'class': 'priceChange yf-1tejb6', 'data-field': 'regularMarketChangePercent'}).text
-
-
-
-# options scraping #
-
-today = date.today()
-week_from_today = today + timedelta(weeks=1)
-
-# makes week_from_days into a unix tiemstamp for scraping
-unix_date = int(datetime.combine(week_from_today, datetime.min.time()).timestamp())
-
-stock_options_url = f'https://finance.yahoo.com/quote/TSLA/options/'
-
-r = requests.get(stock_options_url)
-soup = bs(r.text, 'html.parser')
-
-options_table = soup.find('fin-streamer', {'class': 'livePrice yf-1tejb6'})
-
-
-
-# yfinance options #
+# yfinance options scraping #
 ticker = 'TSLA'
 
 stock = yf.Ticker(ticker)
