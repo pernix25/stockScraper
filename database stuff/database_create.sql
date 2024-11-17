@@ -3,13 +3,13 @@ use stockScraper;
 
 -- Table Creations
 CREATE TABLE stocks(
-    stock_id INT PRIMARY KEY,
+    stock_id INT AUTO_INCREMENT PRIMARY KEY,
     ticker VARCHAR(16),
     company_name VARCHAR(50),
     sector VARCHAR(50)
 );
 CREATE TABLE option_contracts(
-    option_id INT PRIMARY KEY,
+    option_id INT AUTO_INCREMENT PRIMARY KEY,
     stock_id INT,
     expiration_date DATE,
     strike_price DECIMAL(10,2),
@@ -18,7 +18,7 @@ CREATE TABLE option_contracts(
     FOREIGN KEY (stock_id) REFERENCES stocks(stock_id)
 );
 CREATE TABLE market_data(
-    market_data_id INT PRIMARY KEY,
+    market_data_id INT AUTO_INCREMENT PRIMARY KEY,
     option_id INT,
     time_stamp DATETIME,
     last_price DECIMAL(10,2),
@@ -29,7 +29,7 @@ CREATE TABLE market_data(
     FOREIGN KEY (option_id) REFERENCES option_contracts(option_id)
 );
 CREATE TABLE trades(
-    trade_id INT PRIMARY KEY,
+    trade_id INT AUTO_INCREMENT PRIMARY KEY,
     option_id INT,
     trade_date DATETIME DEFAULT CURRENT_TIMESTAMP,
     price DECIMAL(10,2),
