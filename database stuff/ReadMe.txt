@@ -1,13 +1,10 @@
-How to create the databse for stockScraper
-Make sure mysql is installed via community installer
-This step guide is for mac users
+How to create the database for stockScraper
+step 1: Login to mysql on computer
 
-Open up terminal and run:
-    cd /usr/local/mysql/bin
-    ./mysql -u root -p
-Enter password for mysql
+step 2:
 Execute the following scripts in the command line:
     source /path_to/database_create.sql;
 
+optional:
 to resest the database run:
     source /path_to/reset.sql;
