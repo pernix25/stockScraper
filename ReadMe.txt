@@ -1,4 +1,9 @@
-How to operate
+Description:
+This project scrapes the top 5 calls/puts a week from today based on tickers in tickers.txt
+
+
+
+How to operate ->
 
 step 1:
 read the database stuff ReadMe.txt and follow instructions to set up the database for the main program
@@ -9,7 +14,11 @@ install dependencies in terminal ->
     pip install yfinance
 
 step 3:
-add all the tickers you wish to get the stock option info for (each line is a ticker)
-
-step 4:
 run main.py
+
+
+
+Optional steps ->
+
+step 2.5:
+alter the tickers.txt to have any number of stock tickers (make sure to capitalize tickers and spell them right)

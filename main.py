@@ -1,6 +1,6 @@
 import yfinance as yf
 import mysql.connector
-from datetime import date, timedelta, datetime
+from datetime import date, timedelta
 
 def is_weekday(day: object) -> bool:
     """
