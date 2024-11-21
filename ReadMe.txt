@@ -1,5 +1,5 @@
 Description:
-This project scrapes the top 5 calls/puts a week from today based on tickers in tickers.txt
+This project scrapes the top 5 calls/puts (by volume) a week from today based on tickers in tickers.txt
 
 
 
