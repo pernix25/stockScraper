@@ -10,8 +10,7 @@ read the database stuff ReadMe.txt and follow instructions to set up the databas
 
 step 2:
 install dependencies in terminal ->
-    pip install mysql-connector-python
-    pip install yfinance
+    pip install -r requirements.txt
 
 step 3:
 run main.py
