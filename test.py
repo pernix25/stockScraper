@@ -29,48 +29,69 @@ test_option = get_exp_dates(ticker)[2]
 #print(data)
 
 
-def get_options_strike_prices(ticker: str, expiration_date, step_size=2.5) -> list:
+def get_options_strike_prices(ticker: str, expiration_date, step_size=2.5) -> list[dict]:
     """returns a list of option strike prices based on the ticker and option type (parameters)
     :param ticker: The ticker of a single stock
     :param opt_call: A boolean value based on if you want strike prices based on calls or puts
     :param step_size: The step size between option contracts
     """
-    def round_2_point_5(num: float) -> float:
-        return round(num / 2.5) * 2.5
+    def contract_round(num: float, rounding_number) -> float:
+        return round(num / rounding_number) * rounding_number
     
     option_data = [None]
 
+    # gets the closest option contract price based on the current prices on contract step size parameter
     stock_price = float(rh.stocks.get_latest_price(ticker)[0])
-    stock_price = round_2_point_5(stock_price)
+    contract_price = contract_round(stock_price, step_size)
 
-    curr_price_data = rh.options.find_options_by_expiration_and_strike(ticker, expiration_date, stock_price)
-    if curr_price_data:
-        for data in curr_price_data:
-            option_data.append(data)
-    else:
-        while not curr_price_data:
-            stock_price += step_size
-            curr_price_data = rh.options.find_options_by_expiration_and_strike(ticker, expiration_date, stock_price)
-        for data in curr_price_data:
-            option_data.append(data)
+    # loop that increments contract price by step size unitl contract data is obtained
+    contract_data = rh.options.find_options_by_expiration_and_strike(ticker, expiration_date, contract_price)
+    while not contract_data:
+        contract_price += step_size
+        contract_data = rh.options.find_options_by_expiration_and_strike(ticker, expiration_date, contract_price)
 
-    for i in range(1, 21):
-        pos_temp_stock_price = stock_price + (step_size * i)
-        neg_temp_stock_price = stock_price - (step_size * i)
-
-        pos_prices = rh.options.find_options_by_expiration_and_strike(ticker, expiration_date, pos_temp_stock_price)
-        neg_prices = rh.options.find_options_by_expiration_and_strike(ticker, expiration_date, neg_temp_stock_price)
-
-        if not pos_prices and not neg_prices:
-            while not pos_prices:
-                pos_temp_stock_price += step_size
-        elif not pos_prices:
-            pass
-        elif not neg_prices:
-            pass
+    # loop that increments prices by step size to retrieve contract data for 20 contracts centered around original contract price
+    high_contract_price = contract_price
+    low_contract_price = contract_price
+    contract_count = 0
+    while (contract_count < 20):
+        high_contract_data = rh.options.find_options_by_expiration_and_strike(ticker, expiration_date, high_contract_price)
+        low_contract_data = rh.options.find_options_by_expiration_and_strike(ticker, expiration_date, low_contract_price)
+        if high_contract_data and low_contract_data:
+            for contract in high_contract_data:
+                option_data.append(contract)
+            for contract in low_contract_data:
+                option_data.append(contract)
+            contract_count += 1
         else:
-            pass
+            high_contract_price += step_size
+            low_contract_price -= step_size
 
+    # increment the prices by step size before entering loops
+    high_contract_price += step_size
+    low_contract_price -= step_size
+
+    # loop that increments the high price and get data on 30 mroe call contracts
+    contract_count = 0
+    while (contract_count < 30):
+        high_contract_data = rh.options.find_options_by_expiration_and_strike(ticker, expiration_date, high_contract_price, 'call')
+        if high_contract_data:
+            for contract in high_contract_data:
+                option_data.append(contract)
+            contract_count += 1
+        else:
+            high_contract_price += step_size
+
+    # loop that increments the low price to get data on 30 more put contracts
+    contract_count = 0
+    while (contract_count < 30):
+        low_contract_data = rh.options.find_options_by_expiration_and_strike(ticker, expiration_date, low_contract_price, 'put')
+        if low_contract_data:
+            for contract in low_contract_data:
+                option_data.append(contract)
+        else:
+            low_contract_data -= step_size
+    
     return option_data
 
 #x = get_options_strike_prices(ticker)
